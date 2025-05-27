@@ -8,9 +8,11 @@ import java.util.ArrayList;
 @Data
 @Builder
 public class Question {
+    private int id;
+
     private String text;
 
-    private ArrayList<String> answers;
+    private ArrayList<String> options;
 
     private int correctAnswer;
 }

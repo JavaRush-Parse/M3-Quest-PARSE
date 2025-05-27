@@ -11,15 +11,15 @@ public class QuestionRepository {
 
 
     private QuestionRepository() {
-        ArrayList<String> answers = new ArrayList<>();
-        answers.add("A");
-        answers.add("B");
-        answers.add("C");
-        answers.add("Programming language");
+        ArrayList<String> options = new ArrayList<>();
+        options.add("A");
+        options.add("B");
+        options.add("C");
+        options.add("Programming language");
 
         questions.add(Question.builder()
                 .text("What is java")
-                .answers(answers)
+                .options(options)
                 .correctAnswer(3)
                 .build());
     }

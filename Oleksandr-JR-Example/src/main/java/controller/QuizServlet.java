@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.*;
 
 @WebServlet(name = "QuizServlet", value = "/quiz")
 public class QuizServlet extends HttpServlet {
@@ -17,19 +17,30 @@ public class QuizServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        ArrayList<Question> questions = questionRepository.getAll();
-
-
+        // Load all questions and store in session for later scoring
+        List<Question> questions = questionRepository.getAll();
         req.getSession().setAttribute("questions", questions);
 
-        // Forwarding to the JSP page
-        getServletContext().getRequestDispatcher("/quiz.jsp").forward(req, resp);
+        // Forward to the quiz page
+        getServletContext()
+                .getRequestDispatcher("/quiz.jsp")
+                .forward(req, resp);
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // Placeholder for POST handling logic
-        resp.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED, "POST method is not supported.");
+        // Retrieve questions from session
+        List<Question> questions = (List<Question>) req.getSession().getAttribute("questions");
+
+
+        // Prepare results for display
+        req.setAttribute("score", 1);
+        req.setAttribute("totalQuestions", questions.size());
+
+        // Forward to a results JSP
+        getServletContext()
+                .getRequestDispatcher("/result.jsp")
+                .forward(req, resp);
     }
 }

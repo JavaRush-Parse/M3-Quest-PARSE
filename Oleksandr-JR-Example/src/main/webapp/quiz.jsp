@@ -1,31 +1,54 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page contentType="text/html;charset=UTF-8" %>
-
+<%@ page language="java"
+         contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8"
+         isELIgnored="false" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
     <meta charset="UTF-8">
-    <title>FQ HTML</title>
-
-
+    <title>Quiz</title>
     <style>
         table, th, td {
-            border: 1px solid black;
-            border-collapse: collapse;
+            border: 1px solid #333;
             padding: 8px;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #eee;
         }
     </style>
-
 </head>
-
 <body>
-
-
-<%= request.getSession().getAttribute("questions")  %>
-
-
+<h1>Take the Quiz</h1>
+<form action="${pageContext.request.contextPath}/quiz" method="post">
+    <table>
+        <tr>
+            <th>#</th>
+            <th>Question</th>
+            <th>Options</th>
+        </tr>
+        <c:forEach var="question" items="${sessionScope.questions}" varStatus="status">
+            <tr>
+                <td>${status.index + 1}</td>
+                <td>${question.text}</td>
+                <td>
+                    <c:forEach var="opt" items="${question.options}">
+                        <label>
+                            <input type="radio"
+                                   name="answer_${question.id}"
+                                   value="${opt}"
+                                   required/>
+                                ${opt}
+                        </label><br/>
+                    </c:forEach>
+                </td>
+            </tr>
+        </c:forEach>
+    </table>
+    <button type="submit">Submit Quiz</button>
+</form>
 </body>
-
 </html>
